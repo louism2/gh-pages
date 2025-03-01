@@ -1,0 +1,83 @@
+<!-- https://louism2.github.io/gh-pages/ -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Code Scanner</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+    <style>
+      #qr-canvas {
+        width: 100%;
+        height: auto;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>QR Code Scanner</h1>
+    <video
+      id="video"
+      width="100%"
+      height="auto"
+      style="border: 1px solid black"
+    ></video>
+    <canvas id="qr-canvas"></canvas>
+    <script>
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("qr-canvas");
+      const context = canvas.getContext("2d");
+      const qrCanvas = document.getElementById("qr-canvas");
+
+      // Function to start the camera
+      async function startCamera() {
+        const constraints = {
+          video: { facingMode: "user" }, // 'user' for front-facing camera
+        };
+
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia(constraints);
+          video.srcObject = stream;
+          video.setAttribute("playsinline", true); // Required for iOS
+          video.play();
+          requestAnimationFrame(scanQRCode); // Start scanning QR codes
+        } catch (err) {
+          console.error("Error accessing camera:", err);
+        }
+      }
+
+      // Function to scan the QR code from the video stream
+      function scanQRCode() {
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          // Set the canvas size to the video size
+          canvas.height = video.videoHeight;
+          canvas.width = video.videoWidth;
+
+          // Draw the current video frame onto the canvas
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+          // Get image data from the canvas
+          const imageData = context.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+          const code = jsQR(imageData.data, canvas.width, canvas.height, {
+            inversionAttempts: "dontInvert",
+          });
+
+          if (code) {
+            console.log("QR Code found:", code.data);
+            alert("QR Code detected: " + code.data);
+          }
+        }
+
+        requestAnimationFrame(scanQRCode); // Continue scanning
+      }
+
+      // Start the camera when the page is loaded
+      window.onload = startCamera;
+    </script>
+  </body>
+</html>
