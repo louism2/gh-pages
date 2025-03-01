@@ -6,5 +6,7 @@ jobs:
     steps:
       - name: Check out repo code
         uses: actions/checkout@v4
+      - name: Install Dependencies
+        run: npm install
       - name: Publish site to Github Pages
         run: npm run deploy
