@@ -11,7 +11,7 @@ jobs:
         run: |
           git config --global user.email $MY_EMAIL
           git config --global user.name $MY_NAME
-          git remote set-url origin https://$MY_NAME:${{ secrets.PASSWORD }}@github.com/your_name/your_repository.git
+          git remote set-url origin https://$MY_NAME:"${{ secrets.PASSWORD }}"@github.com/your_name/your_repository.git
       - name: Check out repo code
         uses: actions/checkout@v4
       - name: Install Dependencies
