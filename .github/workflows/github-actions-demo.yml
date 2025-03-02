@@ -6,7 +6,7 @@ jobs:
     steps:
       - name: Set Github credentials
         env:
-          MY_EMAIL: louiscmancini@@gmail.com
+          MY_EMAIL: louiscmancini@gmail.com
           MY_NAME: louism2
         run: |
           git config --global user.email $MY_EMAIL
