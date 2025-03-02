@@ -13,7 +13,7 @@ jobs:
         run: |
           git config --global user.email $MY_EMAIL
           git config --global user.name $MY_NAME
-          git remote set-url origin https://$MY_NAME:"${{ secrets.PASSWORD }}"@github.com/your_name/your_repository.git
+          git remote set-url origin https://$MY_NAME:"${{ secrets.PASSWORD }}"@github.com/$MY_NAME/gh-pages.git
       - name: Install Dependencies
         run: npm install
       - name: Publish site to Github Pages
